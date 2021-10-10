@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cukrovka</title>
+
+    <script>
+        function calcIns() {
+            var food = 0;
+            if (document.getElementById("vj").value == "0")
+                alert("Zadejte VJ");
+            else
+                food = parseFloat(document.getElementById("vj").value);
+
+            alert((new Date()).toLocaleTimeString() + " aplikovat " + (food + ((parseFloat(document.getElementById("merena").value) -
+                        parseFloat(document.getElementById("cilova").value)) /
+                    parseFloat(document.getElementById("citlivost").value))).toString() +
+                " jednotek, jíst " + foodTime());
+        }
+
+        function calcVj() {
+            document.getElementById("vj").value = (parseFloat(document.getElementById("sach").value) * (parseFloat(document.getElementById("vaha").value) / 100)) / 10;
+        }
+
+        function foodTime() {
+            var glyc = parseFloat(document.getElementById("merena").value);
+            if (glyc <= 3)
+                return "před inzulínem";
+            else if (glyc > 3 && glyc <= 4)
+                return "současně s inzulínem";
+            else if (glyc > 4 && glyc <= 6)
+                return "za 5 - 10 minut";
+            else if (glyc > 6 && glyc <= 11)
+                return "za 10 - 15 minut";
+            else if (glyc > 11 && glyc <= 15)
+                return "za 15 - 20 minut";
+            else
+                return "za víc než 20 minut";
+        }
+    </script>
+</head>
+
+<body>
+    <p>
+        měřená: <input type="number" id="merena" value="0"> </br>
+        cílová: <input type="number" id="cilova" value="4.7"> </br>
+        citlivost: <input type="number" id="citlivost" value="2"> </br>
+        <button onclick="calcIns();">inzulín</button></br>
+        jednotky: <input type="number" id="vj" value="0"> </br>
+        sacharidy: <input type="number" id="sach" value="0"> </br>
+        váha: <input type="number" id="vaha" value="0"> </br>
+        <button onclick="calcVj();">jednotky</button>
+    </p>
+    <br>
+    <br>
+    <br>
+    <a href="testing/index.html">testing</a>
+    <a href="songs.html">dp</a>
+</body>
+
+</html>
