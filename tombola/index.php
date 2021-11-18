@@ -1,4 +1,9 @@
 <?php
+// generování seznamu
+/* for($i = 1; $i <= 109; $i++){
+    echo "g" . $i . "<br>";
+} */
+
 if (isset($_POST["reset"])) {
     resetVal();
 }
