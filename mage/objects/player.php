@@ -1,11 +1,13 @@
 <?php
 require_once "card.php";
+require_once "pack.php";
 
 class Player
 {
   public $id;
   public $username;
   public $packs;
+  public $battles;
 
   function __construct($id, $username)
   {
@@ -28,7 +30,7 @@ class Player
     } else {
       return "ERROR";
     }
-
+    
     $unlockedCards = [];
     if ($unlockedIds != "") {
       $sql = 'SELECT id, name, params FROM cards WHERE id IN (' . $unlockedIds . ');';
@@ -37,6 +39,7 @@ class Player
           $unlockedCards[] = new Card($row[0], $row[1], $row[2]);
         }
         mysqli_free_result($result);
+        mysqli_close($link);
         return $unlockedCards;
       } else {
         return "ERROR";
@@ -44,26 +47,22 @@ class Player
     } else {
       return "ERROR";
     }
-    mysqli_close($link);
   }
 
-  function get_packs_count($link, $refresh)
+  function get_packs($link)
   {
-    if ($refresh || !isset($this->packs)) {
-      $sql = 'SELECT COUNT(player_id) FROM packs WHERE player_id=' . $this->id . ';';
+      $sql = 'SELECT id, name, cards FROM packs WHERE player_id=' . $this->id . ';';
       if ($result = mysqli_query($link, $sql)) {
         while ($row = mysqli_fetch_row($result)) {
-          $this->packs = $row[0];
-          return $row[0];
+          $this->packs[] = new Pack($row[0], $row[1], $row[2]);
         }
         mysqli_free_result($result);
-        mysqli_close($link);
+        return $this->packs;
       } else {
         return "ERROR";
       }
-    }
-    return $this->packs;
   }
+
   function get_wins()
   {
     // TODO předělat :D
@@ -79,4 +78,5 @@ class Player
     // TODO předělat :D
     return "60 %";
   }
+
 }

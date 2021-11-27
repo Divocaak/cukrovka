@@ -2,8 +2,8 @@
 session_start();
 require_once "../objects/card.php";
 require_once "../objects/player.php";
-require_once "../config.php";
-require_once "../glossary.php";
+require_once "../utils/config.php";
+require_once "../utils/elements.php";
 
 $player = unserialize($_SESSION["player"]);
 $unlockedCards = $player->get_unlocked_cards($link);
@@ -25,46 +25,53 @@ $unlockedCardsIds = substr($unlockedCardsIds, 0, -1);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 </head>
 
-<body class="m-5">
-    <a class="btn btn-outline-secondary" href="../home.php"><i class="bi bi-arrow-left"></i></a>
-    <div class="mt-5">
-        <h1> Vytvořit nový balíček</h1>
-        <div hidden id="dataHolder" data-unlocked-cards=<?php echo $unlockedCardsIds; ?> data-player-id=<?php echo $player->id; ?>></div>
-        <div class="row">
-            <div class="col-3">
-                <p>Vybráno <b id="cardsSum" data-cards-sum="0">0</b>/10 karet.</p>
-
+<body>
+    <div class="m-5">
+        <a class="btn btn-outline-secondary" href="../home.php"><i class="bi bi-arrow-left"></i></a>
+        <div class="mt-5">
+            <h1> Vytvořit nový balíček</h1>
+            <div hidden id="dataHolder" data-unlocked-cards=<?php echo $unlockedCardsIds; ?> data-player-id=<?php echo $player->id; ?> data-max-cards-per-pack=<?php echo $maxCardsPerPack; ?> data-max-cards-in-pack=<?php echo $maxCardsInPack; ?>></div>
+            <div class="row">
+                <div class="col-3">
+                    <p>Vybráno <b id="cardsSum" data-cards-sum="0">0</b>/<?php echo $maxCardsInPack; ?> karet.</p>
+                </div>
+                <div class="col-3">
+                    <input class="form-control" id="packName" placeholder="Jméno balíčku">
+                </div>
+                <div class="col-3">
+                    <a class="btn btn-success" id="savePackBtn"><i class="bi bi-check2"></i></a>
+                </div>
+                <div class="col-3">
+                    <a class="btn btn-outline-primary" href="showPacks.php"><i class="bi bi-eye"></i><i class="bi bi-files"></i></a>
+                </div>
             </div>
-            <div class="col-3">
-                <input class="form-control" id="packName" placeholder="Jméno balíčku">
-            </div>
-            <div class="col-3">
-                <a class="btn btn-success" id="savePackBtn"><i class="bi bi-check2"></i></a>
-            </div>
+            <table class="table table-striped table-hover">
+                <caption>Seznam odemčených karet</caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Název</th>
+                        <th scope="col">Vlastnosti</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($unlockedCards as $card) {
+                        echo $card->renderRow($cardGlossary, $maxCardsPerPack) . "<br>";
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
-        <table class="table table-striped table-hover">
-            <caption>Seznam odemčených karet</caption>
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Název</th>
-                    <th scope="col">Vlastnosti</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($unlockedCards as $card) {
-                    echo $card->renderRow($cardGlossary) . "<br>";
-                }
-                ?>
-            </tbody>
-        </table>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
+            let $maxCardsInPack = $("#dataHolder").data("maxCardsInPack");
+            let $maxCardsPerPack = $("#dataHolder").data("maxCardsPerPack");
+
             $(".cardMinusBtn").click(function() {
                 let cardId = $(this).parent().data("cardId");
 
@@ -89,11 +96,11 @@ $unlockedCardsIds = substr($unlockedCardsIds, 0, -1);
                 var cardCountText = $("#cardCount" + cardId);
                 let currCount = cardCountText.data("cardCount");
 
-                if (currCount < 2) {
+                if (currCount < $maxCardsPerPack) {
                     var cardsSumText = $("#cardsSum");
                     let cardsSum = cardsSumText.data("cardsSum");
 
-                    if (cardsSum < 10) {
+                    if (cardsSum < $maxCardsInPack) {
                         currCount++;
                         cardCountText.data("cardCount", currCount);
 
@@ -125,7 +132,7 @@ $unlockedCardsIds = substr($unlockedCardsIds, 0, -1);
                         let playerId = $("#dataHolder").data("playerId");
                         $.ajax({
                             type: 'POST',
-                            url: 'savePack.php',
+                            url: 'scripts/savePack.php',
                             data: {
                                 name: packName,
                                 cards: selectedCards,
@@ -148,6 +155,8 @@ $unlockedCardsIds = substr($unlockedCardsIds, 0, -1);
             });
         });
     </script>
+
+    <?php footer($gameName); ?>
 </body>
 
 </html>

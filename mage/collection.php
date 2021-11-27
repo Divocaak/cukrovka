@@ -2,8 +2,8 @@
 session_start();
 require_once "objects/player.php";
 require_once "objects/card.php";
-require_once "config.php";
-require_once "glossary.php";
+require_once "utils/config.php";
+require_once "utils/elements.php";
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +16,19 @@ require_once "glossary.php";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 </head>
 
-<body class="m-5">
-<a class="btn btn-outline-secondary" href="home.php"><i class="bi bi-arrow-left"></i></a>
-<div class="row mt-5">
-    <h1>Sbírka karet</h1>
-    <?php
-        foreach(unserialize($_SESSION["player"])->get_unlocked_cards($link) as $card){
-            $card->renderCard($cardGlossary, false, "");
-        }
-    ?>
-</div>
+<body>
+    <div class="m-5">
+        <a class="btn btn-outline-secondary" href="home.php"><i class="bi bi-arrow-left"></i></a>
+        <div class="row mt-5">
+            <h1>Sbírka karet</h1>
+            <?php
+            foreach (unserialize($_SESSION["player"])->get_unlocked_cards($link) as $card) {
+                $card->renderCard($cardGlossary, false, "", "");
+            }
+            ?>
+        </div>
+    </div>
+    <?php footer($gameName); ?>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?php
-require_once "../config.php";
+require_once "../utils/config.php";
 
 $username = $password = $confirm_password = $discount = "";
 $username_err = $password_err = $confirm_password_err = "";
@@ -84,29 +84,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <br><br><br>
     <div class="d-flex align-items-center justify-content-center">
         <h2>Registrujte se</h2>
-    </div> <!-- TODO error hlášky červeně, přestylovat -->
+    </div>
     <div class="d-flex align-items-center justify-content-center">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Uživatelské jméno</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+            <div class="form-group text-danger <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                <input placeholder="Uživatelské jméno" type="text" name="username" class="form-control" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Heslo</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+            <div class="form-group text-danger <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                <input placeholder="Heslo" type="password" name="password" class="form-control" value="<?php echo $password; ?>">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Heslo znovu</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+            <div class="form-group text-danger <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                <input placeholder="Heslo znovu" type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Registrovat se">
-                <input type="reset" class="btn btn-default" value="Resetovat">
+                <a class="btn btn-outline-primary" href="login.php">Přihlaste se</a>
             </div>
-            <p>Už máte účet? <a href="login.php">Přihlaste se</a>.</p>
         </form>
     </div>
 </body>

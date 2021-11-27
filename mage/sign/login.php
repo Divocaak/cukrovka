@@ -6,7 +6,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     exit;
 }
  
-require_once "../config.php";
+require_once "../utils/config.php";
 require_once "../objects/player.php";
  
 $username = $password = "";
@@ -80,23 +80,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <br><br><br>
     <div class="d-flex align-items-center justify-content-center">
         <h2>Přihlaste se</h2>
-    </div> <!-- TODO errory červeně, přestylovat -->
+    </div>
     <div class="d-flex align-items-center justify-content-center">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Uživatelské jméno</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+            <div class="form-group text-danger <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                <input placeholder="Uživatelské jméno" type="text" name="username" class="form-control" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span>
             </div>
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Heslo</label>
-                <input type="password" name="password" class="form-control">
+            <div class="form-group text-danger <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                <input placeholder="Heslo" type="password" name="password" class="form-control">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Přihlásit se">
+                <a class="btn btn-outline-primary" href="register.php">Zaregistrujte se</a>
             </div>
-            <p>Ještě nemáte účet? <a href="register.php">Zaregistrujte se</a>.</p>
         </form>
     </div>
 </body>
