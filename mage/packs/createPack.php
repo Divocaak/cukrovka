@@ -13,6 +13,8 @@ foreach ($unlockedCards as $card) {
     $unlockedCardsIds .= $card->id . ",";
 }
 $unlockedCardsIds = substr($unlockedCardsIds, 0, -1);
+
+// TODO delete l8r
 ?>
 
 <!DOCTYPE html>

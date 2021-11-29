@@ -16,8 +16,8 @@ if($link === false){
 $version = "(alfa)";
 $gameName = "Mage (možná přejmenovat) " . $version;
 // packs
-$maxCardsPerPack = 33;
-$maxCardsInPack = 69;
+$maxCardsPerPack = 33;// TODO delete l8r
+$maxCardsInPack = 69;// TODO delete l8r
 $cardGlossary = ["param" => "parametr?", "asd" => "asd pro test, klasa", "pls" => "prosím"];
 // battles
 $maxOpenBattles = 10;

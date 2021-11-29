@@ -1,14 +1,14 @@
 <?php
 session_start();
-require_once "../objects/card.php";
-require_once "../objects/pack.php";
+require_once "../objects/element.php";
+require_once "../objects/tree.php";
 require_once "../objects/player.php";
 require_once "../utils/config.php";
 require_once "../utils/elements.php";
 
-$packs = unserialize($_SESSION["player"])->get_packs($link);
-
-// TODO delete l8r
+$tree = unserialize($_SESSION["player"])->get_tree($link, $_GET["type"]);
+$elements = $tree->get_elements_all($link);
+print_r($elements);
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +65,7 @@ $packs = unserialize($_SESSION["player"])->get_packs($link);
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
             $(".deletePackBtn").click(function() {
@@ -89,7 +89,7 @@ $packs = unserialize($_SESSION["player"])->get_packs($link);
                 });
             });
         });
-    </script>
+    </script> -->
 
     <?php footer($gameName); ?>
 </body>
