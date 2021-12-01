@@ -6,15 +6,13 @@ class Tree
     public $points_spent;
     public $type_id;
     public $type_name;
-    public $player_id;
 
-    function __construct($id, $points_spent, $type_id, $type_name, $player_id)
+    function __construct($id, $points_spent, $type_id, $type_name)
     {
         $this->id = $id;
         $this->points_spent = $points_spent;
         $this->type_id = $type_id;
         $this->type_name = $type_name;
-        $this->player_id = $player_id;
     }
 
     function get_elements_all($link)

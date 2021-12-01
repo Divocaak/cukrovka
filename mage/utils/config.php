@@ -11,14 +11,27 @@ if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
-// XXX settings
+// NOTE settings
 // game
-$version = "(alfa)";
-$gameName = "Mage (možná přejmenovat) " . $version;
-// packs
-$maxCardsPerPack = 33;// TODO delete l8r
-$maxCardsInPack = 69;// TODO delete l8r
-$cardGlossary = ["param" => "parametr?", "asd" => "asd pro test, klasa", "pls" => "prosím"];
+$gameName = "Mage <i>(mby přejmenovat)</i> " . $version;
+$version = "<i>(dev state)</i>";
+// trees
+$maxPoints = 10;
+// elements
+$elementGlossary = [
+    "f" => "fire param",
+    "ff" => "fire param 2",
+    "fff" => "fire param 3",
+    "w" => "water param",
+    "ww" => "water param 2",
+    "www" => "water param 3",
+    "e" => "earth param",
+    "ee" => "earth param 2",
+    "eee" => "earth param 3",
+    "a" => "air param",
+    "aa" => "air param 2",
+    "aaa" => "air param 3"
+];
 // battles
 $maxOpenBattles = 10;
 $battleNames = ["Sevirias", "Avicete", "Castedura", "Lleimería", "Binse", "Tarramadura", "Selusia",

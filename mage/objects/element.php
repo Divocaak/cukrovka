@@ -18,14 +18,14 @@ class Element
     $this->type_name = $type_name;
   }
 
-  // TODO use later
-  /* function get_param($translated, $cardGlossary)
+  function get_param($translated, $elementGlossary)
   {
-    $key = $this->param;
-    return ($translated ? $cardGlossary[$key] : $key);
+    $key = $this->params;
+    return ($translated ? $elementGlossary[$key] : $key);
   }
-
-  function renderCard($cardGlossary, $btn, $pathToRoot, $count)
+  
+  // TODO use later
+  /* function renderCard($cardGlossary, $btn, $pathToRoot, $count)
   {
     echo '<div class="col-2">
     <div class="card">
@@ -38,21 +38,16 @@ class Element
     </div>
   </div>
   </div>';
-  }
+  } */
 
-  function renderRow($cardGlossary, $maxCardsPerPack)
+  function renderRow($elementGlossary, $unlocked, $rowIndex)
   {
-    echo '<tr>
+    $beforeColor = ("table-" . ($unlocked ? "success" : "danger"));
+    echo '<tr class="' . $beforeColor . '" data-before-color="' . $beforeColor . '" id="element' . $rowIndex . '">
         <th scope="row" style="width: 10%"><img src="../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" alt="Tady by měl být obrázek"></th>
         <td>' . $this->name . '</td>
-        <td>' . $this->get_param(true, $cardGlossary) . '</td>
-        <td>
-          <div class="d-flex flex-row" data-card-id="' . $this->id . '">
-            <a class="cardMinusBtn btn btn-outline-danger"><i class="bi bi-dash-circle"></i></a>
-            <p class="px-3" id="cardCount' . $this->id . '" data-card-count="0"><b>0</b>/' . $maxCardsPerPack . '</p>
-            <a class="cardPlusBtn btn btn-outline-success"><i class="bi bi-plus-circle"></i></a>
-          </div>
-        </td>
+        <td>' . $this->get_param(true, $elementGlossary) . '</td>
+        <td><b>' . $this->tier_id . '</b>: ' . $this->tier_name . '</td>
       </tr>';
-  } */
+  }
 }

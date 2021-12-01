@@ -12,17 +12,31 @@ class Player
     $this->username = $username;
   }
 
-  function get_tree($link, $type_id){
-    $tree = null;
-    $sql = 'SELECT t.id, t.points_spent, ty.name FROM trees t
+  function get_trees_all($link){
+    $trees = [];
+    $sql = 'SELECT t.id, t.points_spent, t.type_id, ty.name FROM trees t
       INNER JOIN types ty ON t.type_id=ty.id
-      WHERE t.type_id=' . $type_id . ' AND t.player_id=' . $this->id . ';';
+      WHERE t.player_id=' . $this->id . ';';
     if ($result = mysqli_query($link, $sql)) {
       while ($row = mysqli_fetch_row($result)) {
-        $tree = new Tree($row[0], $row[1], $type_id, $row[2], $this->id);
+        $trees[] = new Tree($row[0], $row[1], $row[2], ucfirst($row[3]));
       }
       mysqli_free_result($result);
-      return $tree;
+      return $trees;
+    } else {
+      return "ERROR";
+    }
+  }
+  
+  function get_remaining_points($link, $maxPoints){
+    $remPoints = 0;
+    $sql = 'SELECT SUM(points_spent) FROM trees WHERE player_id=' . $this->id . ';';
+    if ($result = mysqli_query($link, $sql)) {
+      while ($row = mysqli_fetch_row($result)) {
+        $remPoints = $maxPoints - $row[0];
+      }
+      mysqli_free_result($result);
+      return $remPoints;
     } else {
       return "ERROR";
     }

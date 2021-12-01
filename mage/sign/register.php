@@ -11,25 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else if (strlen(trim($_POST["username"])) > 20) {
         $username_err = "Uživatelské jméno max. 20 znaků";
     } else {
-        $sql = "SELECT id FROM players WHERE username = ?";
-
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-            $param_username = trim($_POST["username"]);
-
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_store_result($stmt);
-
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    $username_err = "Toto uživatelské jméno je již zabráno.";
-                } else {
-                    $username = trim($_POST["username"]);
-                }
-            } else {
-                echo "Něco se nepovedlo, zkuste to prosím později.";
-            }
-            mysqli_stmt_close($stmt);
+        $sql = "SELECT id FROM players WHERE username = " . $_POST["username"];
+        if (mysqli_query($link, $sql)) {
+            $username_err = "Toto uživatelské jméno je již zabráno.";
         }
     }
 
@@ -51,21 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
-        $sql = "INSERT INTO players (username, password) VALUES (?, ?)";
-        if ($stmt = mysqli_prepare($link, $sql)) {
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
-
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT);
-
-            if (mysqli_stmt_execute($stmt)) {
-                header("location: login.php");
-            } else {
-                echo "Něco se nepovedlo, zkuste to prosím později.";
-            }
-            mysqli_stmt_close($stmt);
+        $param_username = $username;
+        $passHash = password_hash($_GET["password"], PASSWORD_DEFAULT);
+        $sql = "INSERT INTO players (username, password) VALUES ('" . $_POST["username"] . "', '" . $passHash . "')";
+        if (mysqli_query($link, $sql)) {
+            $outputMessage = "Byl jste úspěšně zaregistrován, přihlaste se.";
+        } else {
+            echo "ERROR";
         }
     }
+    // TODO při registraci insert data do Tree, do všech 1 bod
     mysqli_close($link);
 }
 ?>

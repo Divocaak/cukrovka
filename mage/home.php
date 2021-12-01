@@ -24,30 +24,27 @@ $player = unserialize($_SESSION["player"]);
                 <a class="btn btn-outline-danger" href="sign/logout.php"><i class="bi bi-box-arrow-left"></i></a>
             </div>
             <div class="col-6">
-                <p>Přihlášen jako <b><?php echo $player->username; ?></b></p>
+                <p>Logged as <b><?php echo $player->username; ?></b></p>
             </div>
         </div>
         <h1 class="m-5"><?php echo $gameName;?></h1>
         <div class="row mt-5">
             <div class="col-4">
-                <h2>Zápasy</h2>
-                <a class="btn btn-danger" href="">Začít zápas</a>
-                <h3 class="mt-3">Rozehrané</h3>
-                <h3 class="mt-3">Historie</h3>
-                <p>Výhry: <b><?php echo $player->get_wins(); ?></b>, Prohry: <b><?php echo $player->get_loses(); ?></b>, Win-rate: <b><?php echo $player->get_win_rate(); ?></b></p>
+                <h2>Battles</h2>
+                <a class="btn btn-danger" href="">Begin new</a>
+                <h3 class="mt-3">Active battles</h3>
+                <h3 class="mt-3">History</h3>
+                <p>Wins: <b><?php echo $player->get_wins(); ?></b>, Loses: <b><?php echo $player->get_loses(); ?></b>, Win-rate: <b><?php echo $player->get_win_rate(); ?></b></p>
             </div>
             <div class="col-4">
-                <h2>Elementy</h2>
-                <a class="btn btn-danger" href="trees/showTree.php?type=1">Oheň</a>
-                <a class="btn btn-primary" href="trees/showTree.php?type=2">Voda</a>
-                <a class="btn btn-success" href="trees/showTree.php?type=3">Země</a>
-                <a class="btn btn-info" href="trees/showTree.php?type=4">Vzduch</a>
-                <!-- <a class="btn btn-outline-primary" href="packs/showPacks.php"><i class="bi bi-eye"></i><i class="bi bi-files"></i></a> -->
+                <h2>Elements</h2>
+                <a class="btn btn-danger" href="trees/showTree.php?type=0">Fire</a>
+                <a class="btn btn-primary" href="trees/showTree.php?type=1">Water</a>
+                <a class="btn btn-success" href="trees/showTree.php?type=2">Earth</a>
+                <a class="btn btn-info" href="trees/showTree.php?type=3">Air</a>
             </div>
             <div class="col-4">
                 <h2>třeba soc. centrum/shop/mage/clan/idk</h2>
-                <!-- <p>Odemčeno <b><?php echo count($player->get_unlocked_cards($link)); ?></b> z XXX karet.</p>
-                <a class="btn btn-outline-warning" href="collection.php"><i class="bi bi-eye"></i><i class="bi bi-file"></i></a> -->
             </div>
         </div>
     </div>

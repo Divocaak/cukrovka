@@ -1,64 +1,50 @@
 <?php
 session_start();
- 
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("location: ../home.php");
     exit;
 }
- 
+
 require_once "../utils/config.php";
 require_once "../objects/player.php";
- 
+
 $username = $password = "";
 $username_err = $password_err = "";
- 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    if(empty(trim($_POST["username"]))){
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Prosím, uživatelské jméno.";
-    } else{
+    } else {
         $username = trim($_POST["username"]);
     }
-    
-    if(empty(trim($_POST["password"]))){
+
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Prosím, zadejte heslo.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
-    
-    if(empty($username_err) && empty($password_err)){
-        $sql = "SELECT id, username, password FROM players WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            $param_username = $username;
-            
-            if(mysqli_stmt_execute($stmt)){
-                mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            session_start();
-                            
-                            $_SESSION["loggedin"] = true;
-                            $player = new Player($id, $username);
-                            $_SESSION["player"] = serialize($player);
- 
-                            header("location: ../home.php");
-                        } else{
-                            echo $password . ' ' . $hashed_password;
-                            $password_err = "Nesprávné uživatelské jméno/heslo.";
-                        }
-                    }
-                } else{
-                    $username_err = "Neznámé uživatelské jméno.";
+
+    if (empty($username_err) && empty($password_err)) {
+        $sql = "SELECT id, username, password FROM players WHERE username='" . $_POST["username"] . "';";
+
+        if ($result = mysqli_query($link, $sql)) {
+            while ($row = mysqli_fetch_row($result)) {
+                if (password_verify($_POST["password"], $row[2])) {
+                    session_start();
+                    $_SESSION["loggedin"] = true;
+                    $player = new Player($row[0], $row[1]);
+                    $_SESSION["player"] = serialize($player);
+
+                    header("location: ../home.php");
+                } else {
+                    echo "Nesprávné uživatelské jméno/heslo.";
                 }
-            } else{
-                echo "Něco se nepovedlo, zkuste to prosím později.";
             }
-            mysqli_stmt_close($stmt);
+            mysqli_free_result($result);
+        } else {
+            echo "ERROR";
         }
     }
     mysqli_close($link);
@@ -71,8 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Přihlaste se</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 </head>
 
