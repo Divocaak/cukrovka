@@ -5,11 +5,15 @@ class Player
 {
   public $id;
   public $username;
+  public $level;
+  public $level_name;
 
-  function __construct($id, $username)
+  function __construct($id, $username, $level, $level_name)
   {
     $this->id = $id;
     $this->username = $username;
+    $this->level = $level;
+    $this->level_name = $level_name;
   }
 
   function get_trees_all($link){

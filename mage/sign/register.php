@@ -37,14 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
         $param_username = $username;
         $passHash = password_hash($_GET["password"], PASSWORD_DEFAULT);
-        $sql = "INSERT INTO players (username, password) VALUES ('" . $_POST["username"] . "', '" . $passHash . "')";
+        $sql = "INSERT INTO players (username, password, level) VALUES ('" . $_POST["username"] . "', '" . $passHash . "', 1)";
         if (mysqli_query($link, $sql)) {
             $outputMessage = "Byl jste úspěšně zaregistrován, přihlaste se.";
         } else {
             echo "ERROR";
         }
     }
-    // TODO při registraci insert data do Tree, do všech 1 bod
+    // URGENT při registraci insert data do Tree, do všech 1 bod
     mysqli_close($link);
 }
 ?>

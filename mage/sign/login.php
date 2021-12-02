@@ -27,14 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($username_err) && empty($password_err)) {
-        $sql = "SELECT id, username, password FROM players WHERE username='" . $_POST["username"] . "';";
+        $sql = "SELECT p.id, p.username, p.password, p.level, l.name FROM players p INNER JOIN levels l ON l.id=p.level WHERE p.username='" . $_POST["username"] . "';";
 
         if ($result = mysqli_query($link, $sql)) {
             while ($row = mysqli_fetch_row($result)) {
                 if (password_verify($_POST["password"], $row[2])) {
                     session_start();
                     $_SESSION["loggedin"] = true;
-                    $player = new Player($row[0], $row[1]);
+                    $player = new Player($row[0], $row[1], $row[3], $row[4]);
                     $_SESSION["player"] = serialize($player);
 
                     header("location: ../home.php");

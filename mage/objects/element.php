@@ -2,17 +2,17 @@
 class Element
 {
   public $id;
-  public $params;
   public $name;
+  public $params;
   public $tier_id;
   public $tier_name;
   public $type_name;
 
-  function __construct($id, $params, $name, $tier_id, $tier_name, $type_name)
+  function __construct($id, $name, $params, $tier_id, $tier_name, $type_name)
   {
     $this->id = $id;
-    $this->params = $params;
     $this->name = $name;
+    $this->params = $params;
     $this->tier_id = $tier_id;
     $this->tier_name = $tier_name;
     $this->type_name = $type_name;
@@ -24,7 +24,7 @@ class Element
     return ($translated ? $elementGlossary[$key] : $key);
   }
   
-  // TODO use later
+  // TODO use later mby
   /* function renderCard($cardGlossary, $btn, $pathToRoot, $count)
   {
     echo '<div class="col-2">

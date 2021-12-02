@@ -18,9 +18,8 @@ class Tree
     function get_elements_all($link)
     {
         $elements = null;
-        $sql = 'SELECT e.id, e.params, n.name, e.tier_id, ti.name, ty.name 
-            FROM ELEMENTS e INNER JOIN names n ON n.id=e.name_id 
-            INNER JOIN tiers ti ON ti.id=e.tier_id 
+        $sql = 'SELECT e.id, e.name, e.params, e.tier_id, ti.name, ty.name 
+            FROM ELEMENTS e INNER JOIN tiers ti ON ti.id=e.tier_id 
             INNER JOIN types ty ON ty.id=e.type_id 
             WHERE e.type_id=' . $this->type_id . ';';
         if ($result = mysqli_query($link, $sql)) {

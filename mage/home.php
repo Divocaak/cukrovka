@@ -24,7 +24,7 @@ $player = unserialize($_SESSION["player"]);
                 <a class="btn btn-outline-danger" href="sign/logout.php"><i class="bi bi-box-arrow-left"></i></a>
             </div>
             <div class="col-6">
-                <p>Logged as <b><?php echo $player->username; ?></b></p>
+                <?php echo "<p>Logged as <b>" . $player->username . " (" . $player->level . ": <i>" . $player->level_name . "</i>)</b></p>"; ?>
             </div>
         </div>
         <h1 class="m-5"><?php echo $gameName;?></h1>
