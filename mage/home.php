@@ -27,14 +27,21 @@ $player = unserialize($_SESSION["player"]);
                 <?php echo "<p>Logged as <b>" . $player->username . " (" . $player->level . ": <i>" . $player->level_name . "</i>)</b></p>"; ?>
             </div>
         </div>
-        <h1 class="m-5"><?php echo $gameName;?></h1>
+        <h1 class="m-5"><?php echo $gameName; ?></h1>
         <div class="row mt-5">
             <div class="col-4">
                 <h2>Battles</h2>
                 <a class="btn btn-danger" href="">Begin new</a>
                 <h3 class="mt-3">Active battles</h3>
                 <h3 class="mt-3">History</h3>
-                <p>Wins: <b><?php echo $player->get_wins(); ?></b>, Loses: <b><?php echo $player->get_loses(); ?></b>, Win-rate: <b><?php echo $player->get_win_rate(); ?></b></p>
+                <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "%</b></p>";?>
+                1) zíksat defender_id a jeho trees
+                2) INSERT INTO attacks
+                3) zobrazit trees, INSERT INTO casual_games (start, defender_id, attack_id)
+                4) na defender_id poslat zprávu o útoku
+                5) INSERT INTO defenses
+                6) UPDATE casual_games
+                7) poslat zprávu hráčům
             </div>
             <div class="col-4">
                 <h2>Elements</h2>

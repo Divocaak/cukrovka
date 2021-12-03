@@ -1,11 +1,8 @@
 <?php
 require_once "../utils/config.php";
 
-$username = $password = $confirm_password = $discount = "";
-$username_err = $password_err = $confirm_password_err = "";
-
+$username_err = $password_err = $confirm_password_err = $password = $confirm_password = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     if (empty(trim($_POST["username"]))) {
         $username_err = "Prosím, zadejte uživatelské jméno";
     } else if (strlen(trim($_POST["username"])) > 20) {
@@ -34,17 +31,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    $e = "";
     if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
-        $param_username = $username;
-        $passHash = password_hash($_GET["password"], PASSWORD_DEFAULT);
+        $passHash = password_hash($password, PASSWORD_DEFAULT);
         $sql = "INSERT INTO players (username, password, level) VALUES ('" . $_POST["username"] . "', '" . $passHash . "', 1)";
-        if (mysqli_query($link, $sql)) {
-            $outputMessage = "Byl jste úspěšně zaregistrován, přihlaste se.";
-        } else {
-            echo "ERROR";
+        if (!mysqli_query($link, $sql)) {
+            $e = "Error: " . $sql . " - " . mysqli_error($link);
         }
     }
-    // URGENT při registraci insert data do Tree, do všech 1 bod
+
+    if ($e == "") {
+        $reggedId = 0;
+        $sql = 'SELECT id FROM players WHERE username="' . $_POST["username"] . '";';
+        if ($result = mysqli_query($link, $sql)) {
+            while ($row = mysqli_fetch_row($result)) {
+                $reggedId = $row[0];
+            }
+            mysqli_free_result($result);
+        }
+
+        $sql = 'INSERT INTO trees (points_spent, type_id, player_id) VALUES (1,1,' . $reggedId . '),(1,2,' . $reggedId . '),(1,3,' . $reggedId . '),(1,4,' . $reggedId . ');';
+        if (!mysqli_query($link, $sql)) {
+            $e = "Error: " . $sql . " - " . mysqli_error($link);
+        } else {
+            echo "Registration was successfully completed!";
+        }
+    } else {
+        echo $e;
+    }
+
     mysqli_close($link);
 }
 ?>

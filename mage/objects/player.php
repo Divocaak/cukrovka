@@ -7,6 +7,8 @@ class Player
   public $username;
   public $level;
   public $level_name;
+  public $wins;
+  public $loses;
 
   function __construct($id, $username, $level, $level_name)
   {
@@ -16,7 +18,8 @@ class Player
     $this->level_name = $level_name;
   }
 
-  function get_trees_all($link){
+  function get_trees_all($link)
+  {
     $trees = [];
     $sql = 'SELECT t.id, t.points_spent, t.type_id, ty.name FROM trees t
       INNER JOIN types ty ON t.type_id=ty.id
@@ -31,8 +34,9 @@ class Player
       return "ERROR";
     }
   }
-  
-  function get_remaining_points($link, $maxPoints){
+
+  function get_remaining_points($link, $maxPoints)
+  {
     $remPoints = 0;
     $sql = 'SELECT SUM(points_spent) FROM trees WHERE player_id=' . $this->id . ';';
     if ($result = mysqli_query($link, $sql)) {
@@ -46,19 +50,45 @@ class Player
     }
   }
 
-  function get_wins()
+  function get_wins($link)
   {
-    // TODO předělat :D
-    return "6";
+    $wins = 0;
+    $sql = 'SELECT COUNT(winner_id) FROM casual_games WHERE end IS NOT NULL AND winner_id=' . $this->id . ';';
+    if ($result = mysqli_query($link, $sql)) {
+      while ($row = mysqli_fetch_row($result)) {
+        $wins = $row[0];
+      }
+      mysqli_free_result($result);
+      $this->wins = $wins;
+      return $wins;
+    } else {
+      return "ERROR";
+    }
   }
-  function get_loses()
+
+  function get_loses($link)
   {
-    // TODO předělat :D
-    return "4";
+    $loses = 0;
+    $sql = 'SELECT COUNT(id) FROM casual_games WHERE end IS NOT NULL AND winner_id !=' . $this->id . '  AND (attacker_id=' . $this->id . ' OR defender_id=' . $this->id . ');';
+    if ($result = mysqli_query($link, $sql)) {
+      while ($row = mysqli_fetch_row($result)) {
+        $loses = $row[0];
+      }
+      mysqli_free_result($result);
+      $this->loses = $loses;
+      return $loses;
+    } else {
+      return "ERROR";
+    }
   }
+
   function get_win_rate()
   {
-    // TODO předělat :D
-    return "60 %";
+    if (isset($this->wins) && isset($this->loses)) {
+      return (($this->loses / $this->wins) * 100);
+    } else {
+      return "ERROR";
+    }
   }
 }
+?>
