@@ -32,4 +32,20 @@ class Tree
             return "ERROR";
         }
     }
+
+    function render_elements_simplified($link)
+    {
+        $elements = $this->get_elements_all($link);
+        $output = '<tr>
+        <th scope="row" style="width: 10%">' . $this->type_name . '</th>';
+        for ($i = 1; $i < count($elements) + 1; $i++) {
+            $output .= '<td class="table-' . ($i <= $this->points_spent ? "success" : "danger") . '"><div class="row">
+            <div class="col-12"><img src="../../imgs/cardImgs/' . $elements[$i - 1]->id . '.png" class="img-thumbnail" style="width:10%" alt="Tady by měl být obrázek"></div>
+            <div class="col-12"><a href="#" class="btn btn-outline-secondary">Detail</a></div>
+            </div>
+            </td>';
+        }
+
+        echo $output . '</tr>';
+    }
 }

@@ -18,12 +18,12 @@ class Player
     $this->level_name = $level_name;
   }
 
-  function get_trees_all($link)
+  function get_trees_all($link, $player_id = null)
   {
     $trees = [];
     $sql = 'SELECT t.id, t.points_spent, t.type_id, ty.name FROM trees t
       INNER JOIN types ty ON t.type_id=ty.id
-      WHERE t.player_id=' . $this->id . ';';
+      WHERE t.player_id=' . ($player_id != null ? $player_id : $this->id) . ';';
     if ($result = mysqli_query($link, $sql)) {
       while ($row = mysqli_fetch_row($result)) {
         $trees[] = new Tree($row[0], $row[1], $row[2], ucfirst($row[3]));
@@ -84,10 +84,10 @@ class Player
 
   function get_win_rate()
   {
-    if (isset($this->wins) && isset($this->loses)) {
-      return (($this->loses / $this->wins) * 100);
+    if ($this->wins + $this->loses > 0) {
+      return (($this->loses / $this->wins) * 100) . "%";
     } else {
-      return "ERROR";
+      return "not enough battles";
     }
   }
 }

@@ -32,9 +32,9 @@ $elementGlossary = [
     "aa" => "air param 2",
     "aaa" => "air param 3"
 ];
-// battles
-$maxOpenBattles = 10;
-$battleNames = ["Sevirias", "Avicete", "Castedura", "Lleimería", "Binse", "Tarramadura", "Selusia",
-    "Varias", "Ciugovia", "Cuevila", "Mácete", "Vallavila", "Cantaria", "Bares", "Raeleros", "Andabria",
-    "Castirbella", "Salastián", "Navardoba", "Cartavedra"];
+// casuals
+$maxOpenBattles = 5;
+$maxWinRateDifference = 5; // TODO chceme v caualech i podle winrateu?
+$maxLevelDifference = 5;
+$elementsPerHand = 5;
 ?>

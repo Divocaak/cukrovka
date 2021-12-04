@@ -23,22 +23,6 @@ class Element
     $key = $this->params;
     return ($translated ? $elementGlossary[$key] : $key);
   }
-  
-  // TODO use later mby
-  /* function renderCard($cardGlossary, $btn, $pathToRoot, $count)
-  {
-    echo '<div class="col-2">
-    <div class="card">
-    <img src="' . $pathToRoot . 'imgs/cardImgs/' . $this->id . '.png" class="card-img-top" alt="Tady by měl být obrázek">
-    <div class="card-body">
-      <h5 class="card-title">' . $this->name . '</h5>
-      <p class="card-text">' . $this->get_param(false, $cardGlossary) . '</p>
-      <a href="..." class="btn btn-primary' . ($btn ? "" : ' disabled') . '"><i class="bi bi-send"></i></a>
-      ' . ($count != "" ? '<p class="mt-2 text-muted"> V balíčku <b class="text-dark">' . $count . '</b> kusů</p>' : "") . '
-    </div>
-  </div>
-  </div>';
-  } */
 
   function renderRow($elementGlossary, $unlocked, $rowIndex)
   {
@@ -48,6 +32,16 @@ class Element
         <td>' . $this->name . '</td>
         <td>' . $this->get_param(true, $elementGlossary) . '</td>
         <td><b>' . $this->tier_id . '</b>: ' . $this->tier_name . '</td>
+      </tr>';
+  }
+
+  function renderHandRow($elementGlossary){
+    echo '<tr>
+        <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
+        <td>' . $this->name . '</td>
+        <td>' . $this->type_name . '</td>
+        <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
+        <td>' . $this->get_param(true, $elementGlossary) . '</td>
       </tr>';
   }
 }
