@@ -35,6 +35,7 @@ class Tree
 
     function render_elements_simplified($link)
     {
+        // TODO show detail on click
         $elements = $this->get_elements_all($link);
         $output = '<tr>
         <th scope="row" style="width: 10%">' . $this->type_name . '</th>';

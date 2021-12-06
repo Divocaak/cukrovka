@@ -35,13 +35,30 @@ class Element
       </tr>';
   }
 
-  function renderHandRow($elementGlossary){
-    echo '<tr>
+  function renderHandRow($elementGlossary)
+  {
+    echo '<tr data-element-id="' . $this->id . '">
         <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
         <td>' . $this->name . '</td>
         <td>' . $this->type_name . '</td>
         <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
         <td>' . $this->get_param(true, $elementGlossary) . '</td>
+        <td><div class="col-6 d-flex align-items-center justify-content-center">
+          <a class="btn btn-info mx-2 mergeBtn">Merge</a>
+          <a class="btn btn-success mx-2 useBtn">Use</a>
+          </div>
+        </td>
+      </tr>';
+  }
+
+  function renderCombinationRow($elementGlossary)
+  {
+    return '<tr data-element-id="' . $this->id . '">
+      <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
+      <td>' . $this->name . '</td>
+      <td>' . $this->type_name . '</td>
+      <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
+      <td>' . $this->get_param(true, $elementGlossary) . '</td>
       </tr>';
   }
 }

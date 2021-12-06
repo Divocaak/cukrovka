@@ -33,8 +33,11 @@ $elementGlossary = [
     "aaa" => "air param 3"
 ];
 // casuals
+// matchmaking
 $maxOpenBattles = 5;
 $maxWinRateDifference = 5; // TODO chceme v caualech i podle winrateu?
 $maxLevelDifference = 5;
-$elementsPerHand = 5;
+// hand making
+$elementsPerIteration = 5;
+$drawIterations = 2;
 ?>
