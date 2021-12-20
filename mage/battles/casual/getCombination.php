@@ -3,21 +3,34 @@ require_once "../../utils/config.php";
 require_once "../../objects/element.php";
 session_start();
 
-//$_POST["element1"] = $_GET["element1"];
-//$_POST["element2"] = $_GET["element2"];
+$parts;
+foreach ($_SESSION["handElements"] as $key => $element) {
+    if ($key == $_POST["key1"]) {
+        $parts .= $_SESSION["handElements"][$_POST["key1"]]->renderCombinationRow($elementGlossary, $_POST["key1"], "comb1");
+    }
+    if ($key == $_POST["key2"]) {
+        $parts .= $_SESSION["handElements"][$_POST["key2"]]->renderCombinationRow($elementGlossary, $_POST["key2"], "comb2");
+    }
+}
 
-$sql = "SELECT result FROM combinations WHERE
-    (element_st=" . $_POST["element1"] . " AND element_nd=" . $_POST["element2"] . ")
-    OR (element_st=" . $_POST["element2"] . " AND element_nd=" . $_POST["element1"] . ");";
+$sql = "SELECT e.id, e.name, e.params, e.tier_id, ti.name, ty.name 
+    FROM ELEMENTS e INNER JOIN tiers ti ON ti.id=e.tier_id 
+    INNER JOIN types ty ON ty.id=e.type_id 
+    WHERE e.id=(SELECT result FROM combinations WHERE
+    (element_st=" . $_POST["id1"] . " AND element_nd=" . $_POST["id2"] . ")
+    OR (element_st=" . $_POST["id2"] . " AND element_nd=" . $_POST["id1"] . "));";
 if ($result = mysqli_query($link, $sql)) {
     while ($row = mysqli_fetch_row($result)) {
-        $resultId = $row[0];
+        $combination = new Element($row[0], $row[1], $row[2], $row[3], $row[4], $row[5]);
     }
-    //$_SESSION["combination"] = ["el1" => $_POST["element1"], "el2" => $_POST["element2"], "result" => $resultId];
-    $out = $_SESSION["allElements"][$_POST["element1"]]->renderCombinationRow($elementGlossary);
-    $out .= $_SESSION["allElements"][$_POST["element2"]]->renderCombinationRow($elementGlossary);
-    echo json_encode($out);
+
+    $resHead = '<tr class="table-dark" id="mergePreview" data-result-id="' . ($combination->id != null ? $combination->id : 0) . '"><td colspan="5">Result:</td></tr>';
+    if ($combination != null) {
+        $comb .= $combination->renderCombinationRow($elementGlossary, "", "");
+    } else {
+        $comb .= '<tr class="table-danger"><td colspan="5">Cannot combine</td></tr>';
+    }
 } else {
-    echo json_encode("!Error: " . $sql . " - " . mysqli_error($link));
+    $out = 'ERROR';
 }
-?>
+echo json_encode($parts . $resHead . $comb . $out);

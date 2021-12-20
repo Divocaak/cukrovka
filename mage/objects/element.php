@@ -35,11 +35,11 @@ class Element
       </tr>';
   }
 
-  function renderHandRow($elementGlossary)
+  function renderHandRow($elementGlossary, $key)
   {
-    echo '<tr data-element-id="' . $this->id . '">
+    echo '<tr data-element-id="' . $this->id . '" data-hand-key="' . $key . '">
         <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
-        <td>' . $this->name . '</td>
+        <td>' . $key . ": " . $this->name . '</td>
         <td>' . $this->type_name . '</td>
         <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
         <td>' . $this->get_param(true, $elementGlossary) . '</td>
@@ -51,9 +51,9 @@ class Element
       </tr>';
   }
 
-  function renderCombinationRow($elementGlossary)
+  function renderCombinationRow($elementGlossary, $key, $htmlId)
   {
-    return '<tr data-element-id="' . $this->id . '">
+    return '<tr id="' . $htmlId . '" data-element-id="' . $this->id . '" data-hand-key="' . $key . '">
       <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
       <td>' . $this->name . '</td>
       <td>' . $this->type_name . '</td>
