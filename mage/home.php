@@ -24,7 +24,7 @@ $player = unserialize($_SESSION["player"]);
                 <a class="btn btn-outline-danger" href="sign/logout.php"><i class="bi bi-box-arrow-left"></i></a>
             </div>
             <div class="col-6">
-                <?php echo "<p>Logged as <b>" . $player->username . " (" . $player->level . ": <i>" . $player->level_name . "</i>)</b></p>"; ?>
+                <?php echo "<p>Logged as " . $player->renderNameWithLevel() . "</p>"; ?>
             </div>
         </div>
         <h1 class="m-5"><?php echo $gameName; ?></h1>
@@ -33,8 +33,40 @@ $player = unserialize($_SESSION["player"]);
                 <h2>Battles</h2>
                 <!-- BUG zakázat, pokud nevyužil všechny treepointy -->
                 <a class="btn btn-danger" href="battles/casual/casual.php">Begin new</a>
-                <h3 class="mt-3">Outgoing attacks</h3>
+                <h3 class="mt-3">Battle logs</h3>
+                <table class="table table-striped table-hover mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Attack initiated</th>
+                        <th scope="col">Defender</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach($player->get_casual_battle($link, true) as $log){
+                        $log->renderBattleLog();
+                    }
+                    ?>
+                </tbody>
+            </table>
                 <h3 class="mt-3">Incoming attacks</h3>
+                <table class="table table-striped table-hover mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Attack arrived</th>
+                        <th scope="col">Attacker</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach($player->get_casual_battle($link, false) as $incomingAttack){
+                        $incomingAttack->renderAttackRow();
+                    }
+                    ?>
+                </tbody>
+            </table>
                 <h3 class="mt-3">History</h3>
                 <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "</b></p>";?>
             </div>

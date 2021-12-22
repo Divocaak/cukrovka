@@ -12,16 +12,19 @@ class Element
   {
     $this->id = $id;
     $this->name = $name;
-    $this->params = $params;
+    $this->params = json_decode($params, true);
     $this->tier_id = $tier_id;
     $this->tier_name = $tier_name;
     $this->type_name = $type_name;
   }
 
-  function get_param($translated, $elementGlossary)
+  function get_param($elementGlossary)
   {
-    $key = $this->params;
-    return ($translated ? $elementGlossary[$key] : $key);
+    $ret = "";
+    foreach($this->params as $key => $value){
+      $ret .= $elementGlossary[$key] . " (" . $value . ") ";
+    }
+    return $ret;
   }
 
   function renderRow($elementGlossary, $unlocked, $rowIndex)
@@ -30,7 +33,7 @@ class Element
     echo '<tr class="' . $beforeColor . '" data-before-color="' . $beforeColor . '" id="element' . $rowIndex . '">
         <th scope="row" style="width: 10%"><img src="../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" alt="Tady by měl být obrázek"></th>
         <td>' . $this->name . '</td>
-        <td>' . $this->get_param(true, $elementGlossary) . '</td>
+        <td>' . $this->get_param($elementGlossary) . '</td>
         <td><b>' . $this->tier_id . '</b>: ' . $this->tier_name . '</td>
       </tr>';
   }
@@ -42,7 +45,7 @@ class Element
         <td>' . $key . ": " . $this->name . '</td>
         <td>' . $this->type_name . '</td>
         <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
-        <td>' . $this->get_param(true, $elementGlossary) . '</td>
+        <td>' . $this->get_param($elementGlossary) . '</td>
         <td><div class="col-6 d-flex align-items-center justify-content-center">
           <a class="btn btn-info mx-2 mergeBtn">Merge</a>
           <a class="btn btn-success mx-2 useBtn">Use</a>
@@ -58,7 +61,17 @@ class Element
       <td>' . $this->name . '</td>
       <td>' . $this->type_name . '</td>
       <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
-      <td>' . $this->get_param(true, $elementGlossary) . '</td>
+      <td>' . $this->get_param($elementGlossary) . '</td>
+      </tr>';
+  }
+
+  function renderAttackRow($elementGlossary){
+    return '<tr>
+        <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
+        <td>' . $this->name . '</td>
+        <td>' . $this->type_name . '</td>
+        <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
+        <td>' . $this->get_param($elementGlossary) . '</td>
       </tr>';
   }
 }

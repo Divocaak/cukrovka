@@ -18,20 +18,7 @@ $version = "<i>(dev state)</i>";
 // trees
 $maxPoints = 10;
 // elements
-$elementGlossary = [
-    "f" => "fire param",
-    "ff" => "fire param 2",
-    "fff" => "fire param 3",
-    "w" => "water param",
-    "ww" => "water param 2",
-    "www" => "water param 3",
-    "e" => "earth param",
-    "ee" => "earth param 2",
-    "eee" => "earth param 3",
-    "a" => "air param",
-    "aa" => "air param 2",
-    "aaa" => "air param 3"
-];
+$elementGlossary = ["dmg" => "Damage"];
 // casuals
 // matchmaking
 $maxOpenBattles = 5;
