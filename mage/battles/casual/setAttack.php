@@ -8,7 +8,7 @@ $player = unserialize($_SESSION["player"]);
 $sql = "INSERT INTO casual_games (attacker_id, attack, defender_id) VALUES
     (" . $player->id . ", '" . $_POST["attackIds"] . "', " . $_POST["defenderId"] . ");";
 if (!mysqli_query($link, $sql)) {
-    echo json_encode("ERROR");
+    echo json_encode("ERROR" . $sql);
 }else{
     unset($_SESSION["handElements"]);
     echo json_encode("Attack initiated!");

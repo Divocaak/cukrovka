@@ -23,13 +23,12 @@ class Player
     return "<b>" . $this->username . " (" . $this->level . ": <i>" . $this->level_name . "</i>)</b>";
   }
 
-  // WAITING otestovat jestli někde potřebuju player_id
-  function get_trees_all($link/* , $player_id = null */)
+  function get_trees_all($link)
   {
     $trees = [];
     $sql = 'SELECT t.id, t.points_spent, t.type_id, ty.name FROM trees t
       INNER JOIN types ty ON t.type_id=ty.id
-      WHERE t.player_id=' . /* ($player_id != null ? $player_id : $this->id) */ $this->id . ';';
+      WHERE t.player_id=' . $this->id . ';';
     if ($result = mysqli_query($link, $sql)) {
       while ($row = mysqli_fetch_row($result)) {
         $trees[] = new Tree($row[0], $row[1], $row[2], ucfirst($row[3]));
@@ -113,7 +112,7 @@ class Player
       mysqli_free_result($result);
       return $incomingAttacks;
     } else {
-      return "ERROR";
+      return [];
     }
   }
 }

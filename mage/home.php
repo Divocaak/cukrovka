@@ -33,42 +33,42 @@ $player = unserialize($_SESSION["player"]);
                 <h2>Battles</h2>
                 <!-- BUG zakázat, pokud nevyužil všechny treepointy -->
                 <a class="btn btn-danger" href="battles/casual/casual.php">Begin new</a>
-                <h3 class="mt-3">Battle logs</h3>
+                <h3 class="mt-3">Active battles</h3>
                 <table class="table table-striped table-hover mt-3">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Attack initiated</th>
-                        <th scope="col">Defender</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach($player->get_casual_battle($link, true) as $log){
-                        $log->renderBattleLog();
-                    }
-                    ?>
-                </tbody>
-            </table>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Attack initiated</th>
+                            <th scope="col">Defender</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($player->get_casual_battle($link, true) as $log) {
+                            $log->renderBattleLog();
+                        }
+                        ?>
+                    </tbody>
+                </table>
                 <h3 class="mt-3">Incoming attacks</h3>
                 <table class="table table-striped table-hover mt-3">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">Attack arrived</th>
-                        <th scope="col">Attacker</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach($player->get_casual_battle($link, false) as $incomingAttack){
-                        $incomingAttack->renderAttackRow();
-                    }
-                    ?>
-                </tbody>
-            </table>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Attack arrived</th>
+                            <th scope="col">Attacker</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($player->get_casual_battle($link, false) as $incomingAttack) {
+                            $incomingAttack->renderAttackRow();
+                        }
+                        ?>
+                    </tbody>
+                </table>
                 <h3 class="mt-3">History</h3>
-                <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "</b></p>";?>
+                <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "</b></p>"; ?>
             </div>
             <div class="col-4">
                 <h2>Elements</h2>
@@ -79,6 +79,18 @@ $player = unserialize($_SESSION["player"]);
             </div>
             <div class="col-4">
                 <h2>třeba soc. centrum/shop/mage/clan/idk</h2>
+                [ ] ošetřit quitnutí před zahájením battleu<br>
+                [x] zíksat defender_id a jeho trees<br>
+                [x] vybrat random moje elementy<br>
+                [x] skládání<br>
+                [x] get ids na attack<br>
+                [x] INSERT INTO casual_games<br>
+                [x] Attacker - Battle logs (waiting for response/results known)<br>
+                [x] Defender - incoming attacks<br>
+                [x] UPDATE casual_games o defense<br>
+                [ ] show results button<br>
+                [ ] update attacker_seen<br>
+                [ ] history na obou stranách
             </div>
         </div>
     </div>

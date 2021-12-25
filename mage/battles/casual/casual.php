@@ -45,7 +45,12 @@ if (!isset($_POST["battleId"])) {
 }
 
 $defender = get_player_by_id($defenderId, $link);
-$defenderTrees = $defender->get_trees_all($link);
+if($defender != null){
+    $defenderTrees = $defender->get_trees_all($link);
+}else{
+    echo "no opponent found :// <br> <a href='../../home.php'>go back</a>";
+    return;
+}
 
 $unlockedElements = [];
 foreach ($player->get_trees_all($link) as $tree) {
@@ -191,17 +196,6 @@ foreach ($player->get_trees_all($link) as $tree) {
             </div>
         </div>
     </div>
-
-    [ ] ošetřit quitnutí před zahájením battleu<br>
-    [x] zíksat defender_id a jeho trees<br>
-    [x] vybrat random moje elementy<br>
-    [x] skládání<br>
-    [x] get ids na attack<br>
-    [x] INSERT INTO casual_games<br>
-    [x] Attacker - Battle logs (waiting for response/results known)<br>
-    [x] Defender - incoming attacks<br>
-    [ ] UPDATE casual_games o defense<br>
-    [ ] poslat zprávu hráčům o výherci<br>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
@@ -372,8 +366,7 @@ foreach ($player->get_trees_all($link) as $tree) {
 
             $("#dismissFightModal").click(function() {
                 $("#fightModal").modal("hide");
-                // TODO přesměrovat
-                //location.href = '../../home.php';
+                location.href = '../../home.php';
             });
         });
     </script>

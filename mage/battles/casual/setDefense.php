@@ -4,15 +4,6 @@ require_once "../../objects/player.php";
 require_once "../../objects/casualBattle.php";
 session_start();
 
-/* 
- [ ] get attacker elements
- [ ] get defender elements
- [ ] render used elements
- [ ] calculate winner
- [ ] update casual battle where id
- [ ] show winner
- */
-
 $player = unserialize($_SESSION["player"]);
 $battle = unserialize($_SESSION["battle"]);
 
@@ -54,20 +45,19 @@ foreach($defenderElements as $key => $element){
     $defenseDmg += $element->params["dmg"];
 }
 
-$winner;
 if($player->id == $battle->attacker->id){
-    if($attackDmg > $defenseDmg){
-        $ret = "<h2>win!</h2>" . $ret;
-    }else{
-        $ret = "<h2>lose!</h2>" . $ret;
-    }
+    $ret = "<h2>" . ($attackDmg > $defenseDmg ? "win!" : "lose!") . "</h2>" . $ret;
+    $winner = ($attackDmg > $defenseDmg ? $player->id : $battle->attacker->id);
 }else{
-    if($attackDmg < $defenseDmg){
-        $ret = "<h2>win!</h2>" . $ret;
-    }else{
-        $ret = "<h2>lose!</h2>" . $ret;
-    }
+    $ret = "<h2>" . ($attackDmg < $defenseDmg ? "win!" : "lose!") . "</h2>" . $ret;
+    $winner = ($attackDmg < $defenseDmg ? $player->id : $battle->attacker->id);
 }
 
-echo json_encode($ret);
+$sql = "UPDATE casual_games SET end=CURRENT_TIMESTAMP, winner_id=" . $winner . ", defense='" . $_POST["defendIds"] .  "' WHERE id=" . $battle->id . ";";
+if(!mysqli_query($link, $sql)){
+    echo json_encode("ERROR " . $sql);
+}else{
+    echo json_encode($ret);
+}
+
 ?>
