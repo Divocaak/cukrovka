@@ -1,6 +1,6 @@
 <?php
-// NOTE mby přejmenovat soubor
-function footer($gameName){
+function footer($gameName)
+{
     echo '<footer class="bg-light text-center text-lg-start">
     <div class="container p-4">
         <div class="row">
@@ -30,3 +30,4 @@ function footer($gameName){
     </div>
 </footer>';
 }
+?>

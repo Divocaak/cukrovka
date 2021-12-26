@@ -95,7 +95,65 @@ $player = unserialize($_SESSION["player"]);
         </div>
     </div>
 
+    <div class="modal fade" id="fightModal" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Battle summary</h5>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Tier</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fightModalBody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Dismiss</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $(".showResults").click(function() {
+                var battleId = $(this).data("battleId");
+                $("#fightModal").modal("show");
+                // URGENT mby opravit ajax, tady končim
+                /* $.ajax({
+                    type: 'POST',
+                    url: 'battles/casual/showSummary.php',
+                    data: {
+                        battleId: battleId
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $("#fightModalBody").html(response);
+                        $("#fightModal").modal("show");
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    },
+                    dataType: "json"
+                }); */
+            });
+        });
+    </script>
+
     <?php footer($gameName); ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>
 
 </html>

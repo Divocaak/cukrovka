@@ -9,7 +9,6 @@ class CasualBattle
   public $attack;
   public $defender;
   public $defense;
-  public $attacker_seen;
 
   function __construct(
     $id,
@@ -19,8 +18,7 @@ class CasualBattle
     $attacker,
     $attack,
     $defender,
-    $defense,
-    $attacker_seen
+    $defense
   ) {
     $this->id = $id;
     $this->start = $start;
@@ -30,8 +28,6 @@ class CasualBattle
     $this->attack = $attack;
     $this->defender = $defender;
     $this->defense = $defense;
-    // TODO mby nebudu potřebovat, mby odstranit
-    $this->attacker_seen = $attacker_seen;
   }
 
   function renderAttackRow()
@@ -51,7 +47,7 @@ class CasualBattle
     echo '<tr data-battle-id="' . $this->id . '">
     <td>' . $this->start . '</td>
     <td>' . $this->defender->renderNameWithLevel() . '</td>
-    <td>' . ($this->defense == "" ? "No response yet." : '<a class="btn btn-outline-info mx-2">Show results</a>') . '</td>
+    <td>' . ($this->defense == "" ? "No response yet." : '<a class="btn btn-outline-info mx-2 showResults" data-battle-id="' . $this->id . '">Show results</a>') . '</td>
   </tr>';
   }
 }
