@@ -75,13 +75,15 @@ $player = unserialize($_SESSION["player"]);
                             <!-- URGENT dodělat předělat -->
                             <th scope="col">Battle end</th>
                             <th scope="col">Opponent</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Result</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         foreach ($player->get_history($link) as $battle) {
-                            $battle->renderBattleLog();
+                            $battle->renderHistory($player->id);
                         }
                         ?>
                     </tbody>
@@ -107,7 +109,7 @@ $player = unserialize($_SESSION["player"]);
                 [x] UPDATE casual_games o defense<br>
                 [x] show results button<br>
                 [x] update attacker_seen<br>
-                [ ] history na obou stranách
+                [x] history na obou stranách
             </div>
         </div>
     </div>
@@ -143,6 +145,7 @@ $player = unserialize($_SESSION["player"]);
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
+            var reload = false;
             $(".showResults").click(function() {
                 var battleId = $(this).data("battleId");
                 $("#fightModal").modal("show");
@@ -151,6 +154,30 @@ $player = unserialize($_SESSION["player"]);
                     url: 'battles/casual/showSummary.php',
                     data: {
                         battleId: battleId
+                    },
+                    success: function(response) {
+                        $("#fightModalBody").html(response);
+                        $("#fightModal").modal("show");
+                        reload = true;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    },
+                    dataType: "json"
+                });
+            });
+
+            $(".historyDetail").click(function() {
+                var battleId = $(this).data("battleId");
+                $("#fightModal").modal("show");
+                $.ajax({
+                    type: 'POST',
+                    url: 'battles/casual/showSummary.php',
+                    data: {
+                        battleId: battleId,
+                        isHistory: true
                     },
                     success: function(response) {
                         $("#fightModalBody").html(response);
@@ -167,7 +194,10 @@ $player = unserialize($_SESSION["player"]);
 
             $("#dismissModal").click(function() {
                 $("#fightModal").modal("hide");
-                $("#battlePanel").load(location.href + " #battlePanel");
+                if(reload){
+                    $("#battlePanel").load(location.href + " #battlePanel");
+                    reload = false;
+                }
             });
         });
     </script>

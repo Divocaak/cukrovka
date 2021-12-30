@@ -52,10 +52,13 @@ foreach($defenderElements as $key => $element){
 
 $ret = "<h2>" . ($player->id == $battle->winner ? "win!" : "lose!") . "</h2>" . $ret;
 
-$sql = "UPDATE casual_games SET attacker_seen=1 WHERE id=" . $battle->id . ";";
-if(!mysqli_query($link, $sql)){
-    echo json_encode("ERROR " . $sql);
-}else{
+if(isset($_POST["isHistory"])){
     echo json_encode($ret);
+} else{
+    $sql = "UPDATE casual_games SET attacker_seen=1 WHERE id=" . $battle->id . ";";
+    if(!mysqli_query($link, $sql)){
+        echo json_encode("ERROR " . $sql);
+    }else{
+        echo json_encode($ret);
+    }
 }
-?>

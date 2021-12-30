@@ -50,4 +50,15 @@ class CasualBattle
     <td>' . ($this->defense == "" ? "No response yet." : '<a class="btn btn-outline-info mx-2 showResults" data-battle-id="' . $this->id . '">Show results</a>') . '</td>
   </tr>';
   }
+
+  function renderHistory($myId)
+  {
+    echo '<tr data-battle-id="' . $this->id . '">
+    <td>' . $this->end . '</td>
+    <td>' . ($this->attacker->id == $myId ? $this->defender->username : $this->attacker->username) . '</td>
+    <td><i class="bi bi-arrow-' . ($this->attacker->id == $myId ? "up-right text-secondary" : "down-left text-primary") . '"></i></td>
+    <td><i class="bi bi-' . ($this->winner->id == $myId ? "trophy-fill text-success" : "emoji-dizzy-fill text-danger") . '"></i></td>
+    <td><a class="btn btn-outline-info mx-2 historyDetail" data-battle-id="' . $this->id . '"><i class="bi bi-info"></i></a></td>
+  </tr>';
+  }
 }
