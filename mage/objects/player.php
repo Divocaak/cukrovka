@@ -19,7 +19,8 @@ class Player
     $this->level_name = $level_name;
   }
 
-  function renderNameWithLevel(){
+  function renderNameWithLevel()
+  {
     return "<b>" . $this->username . " (" . $this->level . ": <i>" . $this->level_name . "</i>)</b>";
   }
 
@@ -89,11 +90,7 @@ class Player
 
   function get_win_rate()
   {
-    if ($this->wins + $this->loses > 0) {
-      return (($this->loses / $this->wins) * 100) . "%";
-    } else {
-      return "not enough battles";
-    }
+    return (($this->wins / ($this->wins + $this->loses)) * 100) . " %";
   }
 
   function get_casual_battle($link, $asLog, $id = null)
@@ -115,17 +112,32 @@ class Player
       return [];
     }
   }
+
+  function get_history($link)
+  {
+    $sql = "SELECT id, start, end, winner_id, attacker_id, attack, defender_id, defense, attacker_seen FROM casual_games
+      WHERE (attacker_id=" . $this->id . " OR defender_id=" . $this->id . ") AND attacker_seen=1 ORDER BY start";
+    if ($result = mysqli_query($link, $sql)) {
+      while ($row = mysqli_fetch_row($result)) {
+        $battles[] = new CasualBattle($row[0], $row[1], $row[2], get_player_by_id($row[3], $link), get_player_by_id($row[4], $link), $row[5], get_player_by_id($row[6], $link), $row[7], $row[8]);
+      }
+      mysqli_free_result($result);
+      return $battles;
+    } else {
+      return [];
+    }
+  }
 }
 
 function get_player_by_id($id, $link)
 {
-    $sql = "SELECT p.id, p.username, p.level, l.name FROM players p INNER JOIN levels l ON l.id=p.level WHERE p.id=" . $id . ";";
-    if ($result = mysqli_query($link, $sql)) {
-      while ($row = mysqli_fetch_row($result)) {
-        return new Player($row[0], $row[1], $row[2], $row[3]);
-      }
-      mysqli_free_result($result);
-    } else {
-      return null;
+  $sql = "SELECT p.id, p.username, p.level, l.name FROM players p INNER JOIN levels l ON l.id=p.level WHERE p.id=" . $id . ";";
+  if ($result = mysqli_query($link, $sql)) {
+    while ($row = mysqli_fetch_row($result)) {
+      return new Player($row[0], $row[1], $row[2], $row[3]);
     }
+    mysqli_free_result($result);
+  } else {
+    return null;
+  }
 }

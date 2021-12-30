@@ -29,7 +29,7 @@ $player = unserialize($_SESSION["player"]);
         </div>
         <h1 class="m-5"><?php echo $gameName; ?></h1>
         <div class="row mt-5">
-            <div class="col-4">
+            <div class="col-4" id="battlePanel">
                 <h2>Battles</h2>
                 <!-- BUG zakázat, pokud nevyužil všechny treepointy -->
                 <a class="btn btn-danger" href="battles/casual/casual.php">Begin new</a>
@@ -68,7 +68,24 @@ $player = unserialize($_SESSION["player"]);
                     </tbody>
                 </table>
                 <h3 class="mt-3">History</h3>
-                <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "</b></p>"; ?>
+                <?php echo "<p>Wins: <b>" . $player->get_wins($link) . "</b>, Loses: <b>" . $player->get_loses($link) . "</b>, Win-rate: <b>" . $player->get_win_rate() . "</b></p>";?>
+                <table class="table table-striped table-hover mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <!-- URGENT dodělat předělat -->
+                            <th scope="col">Battle end</th>
+                            <th scope="col">Opponent</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($player->get_history($link) as $battle) {
+                            $battle->renderBattleLog();
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
             <div class="col-4">
                 <h2>Elements</h2>
@@ -88,40 +105,40 @@ $player = unserialize($_SESSION["player"]);
                 [x] Attacker - Battle logs (waiting for response/results known)<br>
                 [x] Defender - incoming attacks<br>
                 [x] UPDATE casual_games o defense<br>
-                [ ] show results button<br>
-                [ ] update attacker_seen<br>
+                [x] show results button<br>
+                [x] update attacker_seen<br>
                 [ ] history na obou stranách
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="fightModal" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Battle summary</h5>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped table-hover mt-3">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Tier</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fightModalBody">
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Dismiss</button>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Battle summary</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-hover mt-3">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Tier</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fightModalBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" id="dismissModal">Dismiss</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script>
@@ -129,15 +146,13 @@ $player = unserialize($_SESSION["player"]);
             $(".showResults").click(function() {
                 var battleId = $(this).data("battleId");
                 $("#fightModal").modal("show");
-                // URGENT mby opravit ajax, tady končim
-                /* $.ajax({
+                $.ajax({
                     type: 'POST',
                     url: 'battles/casual/showSummary.php',
                     data: {
                         battleId: battleId
                     },
                     success: function(response) {
-                        console.log(response);
                         $("#fightModalBody").html(response);
                         $("#fightModal").modal("show");
                     },
@@ -147,7 +162,12 @@ $player = unserialize($_SESSION["player"]);
                         console.log(error);
                     },
                     dataType: "json"
-                }); */
+                });
+            });
+
+            $("#dismissModal").click(function() {
+                $("#fightModal").modal("hide");
+                $("#battlePanel").load(location.href + " #battlePanel");
             });
         });
     </script>

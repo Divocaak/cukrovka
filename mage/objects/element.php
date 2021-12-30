@@ -65,9 +65,9 @@ class Element
       </tr>';
   }
 
-  function renderAttackRow($elementGlossary){
+  function renderAttackRow($elementGlossary, $pathToRoot = "../../"){
     return '<tr>
-        <th scope="row" style="width: 10%"><img src="../../imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
+        <th scope="row" style="width: 10%"><img src="' . $pathToRoot . 'imgs/cardImgs/' . $this->id . '.png" class="img-thumbnail" style="width:40%" alt="Tady by měl být obrázek"></th>
         <td>' . $this->name . '</td>
         <td>' . $this->type_name . '</td>
         <td>' . $this->tier_id . ', ' . $this->tier_name . '</td>
