@@ -72,7 +72,6 @@ $player = unserialize($_SESSION["player"]);
                 <table class="table table-striped table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
-                            <!-- URGENT dodělat předělat -->
                             <th scope="col">Battle end</th>
                             <th scope="col">Opponent</th>
                             <th scope="col">Type</th>
