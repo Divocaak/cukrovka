@@ -4,7 +4,6 @@ function footer($gameName)
     echo '<footer class="bg-light text-center text-lg-start">
     <div class="container p-4">
         <div class="row">
-            <!-- TODO možná nasměrovat co dál? -->
             footer content here
         </div>
     </div>

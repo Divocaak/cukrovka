@@ -30,6 +30,21 @@ class CasualBattle
     $this->defense = $defense;
   }
 
+  function get_used_elements($link, $getDefense)
+  {
+    $sql = 'SELECT e.id, e.name, e.params, e.tier_id, ti.name, ty.name 
+      FROM ELEMENTS e INNER JOIN tiers ti ON ti.id=e.tier_id 
+      INNER JOIN types ty ON ty.id=e.type_id 
+      WHERE e.id IN (' . str_replace("-", ", ", $getDefense ? $this->defense : $this->attack) . ');';
+    if ($result = mysqli_query($link, $sql)) {
+      while ($row = mysqli_fetch_row($result)) {
+          $elements[] = new Element($row[0], $row[1], $row[2], $row[3], $row[4], $row[5]);
+      }
+      mysqli_free_result($result);
+    }
+    return $elements;
+  }
+
   function renderAttackRow()
   {
     echo '<tr>
@@ -41,7 +56,7 @@ class CasualBattle
     </td>
     </tr>';
   }
-  
+
   function renderBattleLog()
   {
     echo '<tr data-battle-id="' . $this->id . '">
